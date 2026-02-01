@@ -18,6 +18,9 @@ app.use(express.json());
 
 // Serve your frontend files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // THE MAIN ENDPOINT: This is where your hardware (ESP32/Pi) will send data
 app.post('/update-bus', (req, res) => {
