@@ -17,9 +17,11 @@ const io = new Server(server, {
 app.use(express.json());
 
 // Serve your frontend files from the 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
+
+// This handles the homepage request
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // THE MAIN ENDPOINT: This is where your hardware (ESP32/Pi) will send data
