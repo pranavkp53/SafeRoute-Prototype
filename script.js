@@ -1,87 +1,40 @@
-/* --- Navigation & Menu Logic (Original) --- */
-
-// Toggles the main dropdown menu [cite: 223-226]
 function toggleMenu() {
-    const menu = document.getElementById("dropdownMenu");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  const menu = document.getElementById("dropdownMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-// Toggles the login submenu [cite: 227-230]
 function toggleSubmenu() {
-    const submenu = document.getElementById("loginSubmenu");
-    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+  const submenu = document.getElementById("loginSubmenu");
+  submenu.style.display = submenu.style.display === "block" ? "none" : "block";
 }
 
-// Closes menus when clicking outside of them [cite: 231-236]
-window.onclick = function(e) {
-    if (!e.target.closest('.menu-icon') && !e.target.closest('.menu')) {
-        const menu = document.getElementById("dropdownMenu");
-        const submenu = document.getElementById("loginSubmenu");
-        if (menu) menu.style.display = "none";
-        if (submenu) submenu.style.display = "none";
-    }
-}
+// MAP INIT
+const map = L.map('map').setView([12.9716, 77.5946], 15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+let busMarker = L.marker([12.9716, 77.5946]).addTo(map);
 
-// Manual toggle function for the UI status [cite: 237-247]
-function toggleBusStatus() {
-    const statusDiv = document.getElementById("busStatus");
-    if (statusDiv.classList.contains("on")) {
-        statusDiv.classList.remove("on");
-        statusDiv.classList.add("off");
-        statusDiv.textContent = "OFF THE BUS";
-    } else {
-        statusDiv.classList.remove("off");
-        statusDiv.classList.add("on");
-        statusDiv.textContent = "ON THE BUS";
-    }
-}
+// SOCKET
+const socket = io();
 
-// Simple alert for the refresh button [cite: 248-251]
-function refreshStatus() {
-    alert("Refreshing student status... (This simulates a system call)");
-}
-
-/* --- Real-Time Map & Hardware Logic (New) --- */
-
-// 1. Initialize the Leaflet map (Replaces the broken Google iframe)
-// Coordinates [12.9716, 77.5946] are a default starting point
-var map = L.map('map').setView([12.9716, 77.5946], 15); 
-
-// 2. Load the free OpenStreetMap tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
-
-// 3. Create a marker to represent the bus
-var busMarker = L.marker([12.9716, 77.5946]).addTo(map);
-
-// 4. Connect to the backend server via Socket.io
-const socket = io(); 
-
-// 5. Listen for real-time updates from the hardware/server
-// 5. Listen for real-time updates from the hardware/NodeMCU
 socket.on('busUpdate', (data) => {
-    // 1. Update Student ID and Status text
-    // Ensure these IDs match the ones you added to your index.html
-    document.getElementById('student-id-display').innerText = data.studentId;
-    
-    const statusDiv = document.getElementById("busStatus");
-    if (data.status === "01") { // "01" represents Entry
-        statusDiv.className = "bus-status on";
-        statusDiv.textContent = "ON THE BUS";
-    } else {
-        statusDiv.className = "bus-status off";
-        statusDiv.textContent = "OFF THE BUS";
-    }
 
-    // 2. Update the Google Map Iframe
-    const mapFrame = document.getElementById('map-frame');
-    let finalUrl = data.location;
-    
-    // Add embed parameter if it's a standard link to allow iframe display
-    if (finalUrl.includes("google.com/maps") && !finalUrl.includes("embed")) {
-        finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
-    }
-    
-    mapFrame.src = finalUrl;
+  document.getElementById('student-id-display').innerText = data.studentId;
+
+  const statusDiv = document.getElementById("busStatus");
+  if (data.status === "EN") {
+    statusDiv.className = "bus-status on";
+    statusDiv.innerText = "ON THE BUS";
+  } else {
+    statusDiv.className = "bus-status off";
+    statusDiv.innerText = "OFF THE BUS";
+  }
+
+  if (data.location.includes("?q=")) {
+    const coords = data.location.split("?q=")[1].split(",");
+    const lat = parseFloat(coords[0]);
+    const lng = parseFloat(coords[1]);
+
+    busMarker.setLatLng([lat, lng]);
+    map.setView([lat, lng], 16);
+  }
 });
