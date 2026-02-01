@@ -47,7 +47,10 @@ attribution: '© OpenStreetMap contributors'
 // 3. Create a marker to represent the bus
 var busMarker = L.marker([12.9716, 77.5946]).addTo(map);
 // 4. Connect to the backend server via Socket.io
-const socket = io();
+const socket = io('https://saferoute-prototype.onrender.com');
+socket.on('connect', () => {
+    console.log("Connected to Backend Successfully! ID:", socket.id);
+});
 // 5. Listen for real-time updates from the hardware/server
 // 5. Listen for real-time updates from the hardware/NodeMCU
 socket.on('busUpdate', (data) => {
