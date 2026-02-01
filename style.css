@@ -1,0 +1,200 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+}
+
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.logo-title {
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.logo-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    width: 0%;
+    height: 3px;
+    background-color: white;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 5px white;
+}
+
+.logo-title:hover {
+    color: #e6f2ff;
+}
+
+.logo-title:hover::after {
+    width: 100%;
+}
+
+.menu-icon {
+    cursor: pointer;
+    width: 30px;
+    transition: transform 0.2s ease;
+}
+
+.menu-icon div {
+    height: 4px;
+    background-color: white;
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: width 0.2s ease, box-shadow 0.3s ease;
+}
+
+.menu-icon:hover div {
+    width: 120%;
+    box-shadow: 0 0 5px white;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    border-radius: 5px;
+    overflow: hidden;
+    min-width: 200px;
+}
+
+.menu a {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.menu a:hover {
+    background-color: #f0f0f0;
+}
+
+.submenu {
+    display: none;
+    background-color: #fafafa;
+}
+
+.submenu a {
+    padding-left: 40px;
+    font-size: 14px;
+}
+
+.content {
+    display: flex;
+    height: calc(100vh - 60px);
+    width: 100%;
+    background-color: white;
+}
+
+.status-panel {
+    width: 30%;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.map-panel {
+    width: 70%;
+    padding: 20px;
+}
+
+.status-panel h3 {
+    margin-bottom: 10px;
+}
+
+.student-info {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.student-info img {
+    width: 80px;
+    border-radius: 50%;
+    margin: 10px 0;
+}
+
+.bus-status {
+    padding: 8px 16px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.on {
+    background-color: #28a745;
+}
+
+.off {
+    background-color: #dc3545;
+}
+
+.bus-status:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.refresh-button,
+.toggle-button {
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.refresh-button {
+    background-color: #007BFF;
+}
+
+.refresh-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.toggle-button {
+    background-color: #6c757d;
+}
+
+.toggle-button:hover {
+    background-color: #5a6268;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
