@@ -1,59 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>SafeRoute: School Bus Tracking</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+<meta charset="UTF-8" />
+<title>SafeRoute: School Bus Tracking</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <header>
-        <div class="logo-title">SafeRoute: School Bus Tracking</div>
-        <div class="menu-icon" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="menu" id="dropdownMenu">
-            <a onclick="toggleSubmenu()">Login</a>
-            <div class="submenu" id="loginSubmenu">
-                <a href="#">Login as Parent</a>
-                <a href="#">Login as Institution</a>
-            </div>
-            <a href="#">Student Details</a>
-            <a href="#">Register a Complaint</a>
-            <a href="#">Notices</a>
-            <a href="#">Feedback</a>
-        </div>
-    </header>
-
-    <div class="content">
-        <div class="status-panel">
-            <h3>Student Status</h3>
-            <div class="student-info">
-                <strong>Michael Brown</strong><br>
-                ID: <span id="student-id-display">123456</span><br>
-                
-                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png" alt="Student">
-                
-                <div id="status-text" class="bus-status on">ON THE BUS</div><br>
-                
-                <button class="refresh-button" onclick="refreshStatus()">Refresh</button><br>
-                <button class="toggle-button" onclick="toggleBusStatus()">Toggle Status</button>
-            </div>
-        </div>
-
-        <div class="map-panel">
-            <div id="map" style="height: 100%; width: 100%; border-radius: 8px;">
-                <iframe id="map-frame" src="" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+<header>
+<div class="logo-title">SafeRoute: School Bus Tracking</div>
+<div class="menu-icon" onclick="toggleMenu()">
+<div></div>
+<div></div>
+<div></div>
+</div>
+<div class="menu" id="dropdownMenu">
+<a onclick="toggleSubmenu()">Login</a>
+<div class="submenu" id="loginSubmenu">
+<a href="#">Login as Parent</a>
+<a href="#">Login as Institution</a>
+</div>
+<a href="#">Student Details</a>
+<a href="#">Register a Complaint</a>
+<a href="#">Notices</a>
+<a href="#">Feedback</a>
+</div>
+</header>
+<div class="content">
+<div class="status-panel">
+<h3>Student Status</h3>
+<div class="student-info">
+<strong>Michael Brown</strong><br>
+ID: <span id="student-id-display">123456</span><br>
+<img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png"
+alt="Student">
+<div id="status-text" class="bus-status on">ON THE BUS</div><br>
+<button class="refresh-button" onclick="refreshStatus()">Refresh</button>
+<br>
+<button class="toggle-button" onclick="toggleBusStatus()">Toggle
+Status</button>
+</div>
+</div>
+<div class="map-panel">
+<div id="map" style="height: 100%; width: 100%; border-radius: 8px;">
+<iframe id="map-frame" src="" width="100%" height="100%" style="border:0;"
+allowfullscreen="" loading="lazy"></iframe>
+</div>
+</div>
+</div>
+<script src="script.js"></script>
 </body>
-</html>
-                
+</html>      
                 
