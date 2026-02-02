@@ -39,13 +39,13 @@ statusDiv.textContent = "ON THE BUS";
  // 1. Initialize the Leaflet map (Replaces the broken Google iframe)
  
  // Coordinates [12.9716, 77.5946] are a default starting point
- var map = L.map('map').setView([12.9716, 77.5946], 15);
+ // var map = L.map('map').setView([12.9716, 77.5946], 15);
  // 2. Load the free OpenStreetMap tiles
- L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
- attribution: '© OpenStreetMap contributors'
- }).addTo(map);
+ // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+ // attribution: '© OpenStreetMap contributors'
+ // }).addTo(map);
  // 3. Create a marker to represent the bus
- var busMarker = L.marker([12.9716, 77.5946]).addTo(map);
+ // var busMarker = L.marker([12.9716, 77.5946]).addTo(map);
  // 4. Connect to the backend server via Socket.io
  const socket = io('https://saferoute-prototype.onrender.com');
  socket.on('connect', () => {
@@ -76,13 +76,24 @@ document.querySelector(".student-info strong").innerText = studentName;
  statusDiv.textContent = "OFF THE BUS";
  }
  // 2. Update the Google Map Iframe
- const mapFrame = document.getElementById('map-frame');
- let finalUrl = data.location;
+ const mapPanel = document.querySelector('.map-panel');
+    let finalUrl = data.location;
  // Add embed parameter if it's a standard link to allow iframe display
  if (finalUrl.includes("google") && !finalUrl.includes("embed")) {
  finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
  }
- // FORCE REFRESH: Add a timestamp so the map always reloads
-const cacheBuster = "&t=" + new Date().getTime();
-mapFrame.src = finalUrl + cacheBuster;
+ // This clears the panel and forces a brand new iframe to load
+    mapPanel.innerHTML = `
+        <div id="map" style="height: 100%; width: 100%; border-radius: 8px;">
+            <iframe 
+                id="map-frame" 
+                src="${finalUrl}&t=${new Date().getTime()}" 
+                width="100%" 
+                height="100%" 
+                style="border:0; border-radius: 8px;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>`;
+
 });
