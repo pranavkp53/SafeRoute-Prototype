@@ -79,12 +79,10 @@ document.querySelector(".student-info strong").innerText = studentName;
  const mapPanel = document.querySelector('.map-panel');
     let finalUrl = data.location;
  // Add embed parameter if it's a standard link to allow iframe display
- if (finalUrl.includes("http")) {
-    finalUrl = `https://www.google.com/maps?q=${finalUrl}&output=embed`;
+ if ((finalUrl.includes("google") || finalUrl.includes("goo.gl")) && !finalUrl.includes("embed")) {
+ finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
  }
- else if (!finalUrl.includes("output=embed")) {
-    finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
-}
+ // This clears the panel and forces a brand new iframe to load
     mapPanel.innerHTML = `
         <div id="map" style="height: 100%; width: 100%; border-radius: 8px;">
             <iframe 
