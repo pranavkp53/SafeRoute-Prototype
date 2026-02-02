@@ -1,4 +1,3 @@
-
 /* --- Navigation & Menu Logic (Original) --- */
 // Toggles the main dropdown menu [cite: 223-226]
 function toggleMenu() {
@@ -83,5 +82,7 @@ document.querySelector(".student-info strong").innerText = studentName;
  if (finalUrl.includes("google") && !finalUrl.includes("embed")) {
  finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
  }
-mapFrame.src = finalUrl;
+ // FORCE REFRESH: Add a timestamp so the map always reloads
+const cacheBuster = "&t=" + new Date().getTime();
+mapFrame.src = finalUrl + cacheBuster;
 });
