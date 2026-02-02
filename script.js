@@ -79,7 +79,7 @@ document.querySelector(".student-info strong").innerText = studentName;
  const mapPanel = document.querySelector('.map-panel');
     let finalUrl = data.location;
  // Add embed parameter if it's a standard link to allow iframe display
- if (finalUrl.includes("google") && !finalUrl.includes("embed")) {
+ if ((finalUrl.includes("google") || finalUrl.includes("goo.gl")) && !finalUrl.includes("embed")) {
  finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
  }
  // This clears the panel and forces a brand new iframe to load
