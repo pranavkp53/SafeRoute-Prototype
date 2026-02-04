@@ -62,8 +62,9 @@ statusDiv.textContent = "ON THE BUS";
     };
 
     // Use the mapped name or default to the ID if not found
-    const nameToDisplay = studentNames[data.studentId] || data.studentId;
-    document.getElementById('student-id').innerText = nameToDisplay;
+    const nameToDisplay = studentNames[data.studentId] || "Unknown Student";
+    document.getElementById('student-name').innerText = nameToDisplay;
+    document.getElementById('student-id-number').innerText = data.studentId;
     
     // 2. Update Status Color and Text
     const statusBox = document.getElementById('status-display');
