@@ -54,46 +54,36 @@ statusDiv.textContent = "ON THE BUS";
  // 5. Listen for real-time updates from the hardware/server
  // 5. Listen for real-time updates from the hardware/NodeMCU
  socket.on('busUpdate', (data) => {
- // Add this name mapping logic
-const nameMap = {
- "D8": "Pranav KP",
- "A0": "Gayathri M",
- "E7": "Vaisakh PV"
-};
+    // 1. Map Hex IDs to Names
+    const studentNames = {
+        "D8": "Pranav KP",
+        "A0": "Gayathri M"
+    };
 
-// Update the display name based on the ID received
-const studentName = nameMap[data.studentId] || "Unknown Student";
-document.querySelector(".student-info strong").innerText = studentName;
- // 1. Update Student ID and Status text
- // Ensure these IDs match the ones you added to your index.html
- document.getElementById('student-id-display').innerText = data.studentId;
- const statusDiv = document.getElementById("status-text");
- if (data.status === "EN") { // "EN" represents Entry
- statusDiv.className = "bus-status on";
- statusDiv.textContent = "ON THE BUS";
- } else if (data.status === "EX") {
- statusDiv.className = "bus-status off";
- statusDiv.textContent = "OFF THE BUS";
- }
- // 2. Update the Google Map Iframe
- const mapPanel = document.querySelector('.map-panel');
-    let finalUrl = data.location;
- // Add embed parameter if it's a standard link to allow iframe display
- if ((finalUrl.includes("google") || finalUrl.includes("goo.gl")) && !finalUrl.includes("embed")) {
- finalUrl += finalUrl.includes("?") ? "&output=embed" : "?output=embed";
- }
- // This clears the panel and forces a brand new iframe to load
+    // Use the mapped name or default to the ID if not found
+    const nameToDisplay = studentNames[data.studentId] || data.studentId;
+    document.getElementById('student-id').innerText = nameToDisplay;
+    
+    // 2. Update Status Color and Text
+    const statusBox = document.getElementById('status-display');
+    const isOnBus = (data.status === "EN");
+    
+    statusBox.innerText = isOnBus ? "ON THE BUS" : "OFF THE BUS";
+    
+    // Ensure these classes (on/off) exist in your style.css
+    statusBox.className = isOnBus ? "status-on" : "status-off";
+
+    // 3. Update the Map (Hard Reset)
+    const mapPanel = document.querySelector('.map-panel');
+    
+    // Use innerHTML to force the iframe to reload with the new URL
     mapPanel.innerHTML = `
-        <div id="map" style="height: 100%; width: 100%; border-radius: 8px;">
-            <iframe 
-                id="map-frame" 
-                src="${finalUrl}&t=${new Date().getTime()}" 
-                width="100%" 
-                height="100%" 
-                style="border:0; border-radius: 8px;" 
-                allowfullscreen="" 
-                loading="lazy">
-            </iframe>
-        </div>`;
-
+        <iframe 
+            src="${data.location}" 
+            width="100%" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+        </iframe>`;
 });

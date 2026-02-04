@@ -20,28 +20,30 @@ app.use(express.static(__dirname));
 app.get('/', (req, res) => {
 res.sendFile(path.join(__dirname, 'index.html'));
 });
-// THE MAIN ENDPOINT: This is where your hardware (ESP32/Pi) will send data
+// THE MAIN ENDPOINT: This is where your NodeMCU sends data
 app.post('/update-bus', (req, res) => {
-// 1. Get the raw string from NodeMCU (e.g., "0102https://goo.gl/maps/...")
-const rawData = req.body.data;
-if (!rawData || rawData.length < 5) {
-return res.status(400).send("Error: Payload too short or missing.");
-}
-// 2. Parse the string using substring
-const studentId = rawData.substring(0, 2); // First 2 chars
-const entryStatus = rawData.substring(2, 4); // Next 2 chars
-const locationUrl = rawData.substring(4); // Everything else
-console.log(`Parsed -> ID: ${studentId}, Status: ${entryStatus}`);
-// 3. Emit the parsed object to your dashboard
-io.emit('busUpdate', {
-studentId: studentId,
-status: entryStatus,
+    // 1. Get the 3 strings sent from your NodeMCU JSON
+    const { hex, status, location } = req.body;
 
-location: locationUrl
+    // Log the data to the console for debugging
+    console.log(`Hex: ${hex}, Status: ${status}, Location: ${location}`);
+
+    // 2. Prepare the object for the dashboard
+    const updateData = {
+        studentId: hex,      // Your hexVal (e.g., D8)
+        status: status,      // Your status (e.g., EN)
+        location: location   // Your long Google URL
+    };
+
+    // 3. Emit the update to all connected dashboards
+    io.emit('busUpdate', updateData);
+    
+    // 4. Send a success response back to the NodeMCU
+    res.status(200).send({ message: "Data received successfully" });
 });
-res.status(200).send("Data Processed");
-});
+
+// The server start logic stays at the bottom
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
 });
