@@ -129,17 +129,21 @@
     color: white;
     transition: transform 0.2s ease, filter 0.2s ease;
     }
-    .on {
-    background-color: #28a745;
+    .status-on {
+    background-color: #28a745 !important;
+    color: white !important;
     }
-    .off {
-    
-    background-color: #dc3545;
+    .status-off {
+     background-color: #dc3545 !important;
+    color: white !important;
     }
-    .bus-status:hover {
+    .status-on:hover, .status-off:hover {
     transform: scale(1.05);
     filter: brightness(1.1);
     }
+    .bus-status.off {
+    background-color: #dc3545;
+}
     .refresh-button,
     .toggle-button {
     margin-top: 10px;

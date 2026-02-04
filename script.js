@@ -20,20 +20,20 @@ function toggleMenu() {
  }
  // Manual toggle function for the UI status [cite: 237-247]
  function toggleBusStatus() {
- const statusDiv = document.getElementById("status-text");
- if (statusDiv.classList.contains("on")) {
- statusDiv.classList.remove("on");
- statusDiv.classList.add("off");
+ const statusDiv = document.getElementById("status-display");
+ if (statusDiv.classList.contains("status-on")) {
+ statusDiv.classList.remove("status-on");
+ statusDiv.classList.add("status-off");
  statusDiv.textContent = "OFF THE BUS";
  } else {
- statusDiv.classList.remove("off");
-statusDiv.classList.add("on");
+ statusDiv.classList.remove("status-off");
+statusDiv.classList.add("status-on");
 statusDiv.textContent = "ON THE BUS";
  }
  }
  // Simple alert for the refresh button [cite: 248-251]
  function refreshStatus() {
- alert("Refreshing student status... (This simulates a system call)");
+ alert("Refreshing student status...");
  }
  /* --- Real-Time Map & Hardware Logic (New) --- */
  // 1. Initialize the Leaflet map (Replaces the broken Google iframe)
@@ -49,7 +49,7 @@ statusDiv.textContent = "ON THE BUS";
  // 4. Connect to the backend server via Socket.io
  const socket = io('https://saferoute-prototype.onrender.com');
  socket.on('connect', () => {
- console.log("Connected to Backend Successfully! ID:", socket.id);
+ console.log("Connected! ID:", socket.id);
  });
  // 5. Listen for real-time updates from the hardware/server
  // 5. Listen for real-time updates from the hardware/NodeMCU
@@ -57,7 +57,8 @@ statusDiv.textContent = "ON THE BUS";
     // 1. Map Hex IDs to Names
     const studentNames = {
         "D8": "Pranav KP",
-        "A0": "Gayathri M"
+        "A0": "Gayathri M",
+        "E7": "Vaisakh PV"
     };
 
     // Use the mapped name or default to the ID if not found
@@ -71,12 +72,13 @@ statusDiv.textContent = "ON THE BUS";
     statusBox.innerText = isOnBus ? "ON THE BUS" : "OFF THE BUS";
     
     // Ensure these classes (on/off) exist in your style.css
-    statusBox.className = isOnBus ? "status-on" : "status-off";
+    statusBox.className = isOnBus ? "bus-status status-on" : "bus-status status-off";
 
     // 3. Update the Map (Hard Reset)
     const mapPanel = document.querySelector('.map-panel');
     
     // Use innerHTML to force the iframe to reload with the new URL
+    if (data.location) {
     mapPanel.innerHTML = `
         <iframe 
             src="${data.location}" 
@@ -86,4 +88,5 @@ statusDiv.textContent = "ON THE BUS";
             allowfullscreen="" 
             loading="lazy">
         </iframe>`;
+    }
 });
