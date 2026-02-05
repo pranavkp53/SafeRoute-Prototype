@@ -56,9 +56,9 @@ statusDiv.textContent = "ON THE BUS";
  socket.on('busUpdate', (data) => {
     // 1. Map Hex IDs to Names
     const studentNames = {
-        "D8": "Pranav KP",
-        "A0": "Gayathri M",
-        "E7": "Vaisakh PV"
+        "d8": "Pranav KP",
+        "a0": "Gayathri M",
+        "e7": "Vaisakh PV"
     };
 
     // Use the mapped name or default to the ID if not found

@@ -24,13 +24,15 @@ res.sendFile(path.join(__dirname, 'index.html'));
 app.post('/update-bus', (req, res) => {
     // 1. Get the 3 strings sent from your NodeMCU JSON
     const { hex, status, location } = req.body;
+    const normalizedHex = hex ? hex.toLowerCase().trim() : "unknown";
+    console.log(`Normalized Hex: ${normalizedHex}, Status: ${status}, Location: ${location}`);
 
     // Log the data to the console for debugging
     console.log(`Hex: ${hex}, Status: ${status}, Location: ${location}`);
 
     // 2. Prepare the object for the dashboard
     const updateData = {
-        studentId: hex,      // Your hexVal (e.g., D8)
+        studentId: normalizedHex,      // Your hexVal (e.g., D8)
         status: status,      // Your status (e.g., EN)
         location: location   // Your long Google URL
     };
