@@ -53,41 +53,33 @@ statusDiv.textContent = "ON THE BUS";
  });
  // 5. Listen for real-time updates from the hardware/server
  // 5. Listen for real-time updates from the hardware/NodeMCU
- socket.on('busUpdate', (data) => {
-    // 1. Map Hex IDs to Names
-    const studentNames = {
-        "d8": "Pranav KP",
-        "a0": "Gayathri M",
-        "e7": "Vaisakh PV"
+socket.on('busUpdate', (data) => {
+    // 1. Student Database
+    const studentProfiles = {
+        "a0": { name: "Gayathri M", reg: "JCE22CS023" },
+        "d8": { name: "Pranav KP", reg: "JCE22CS042" }, // Updated ID and Reg
+        "e7": { name: "Vaisakh PV", reg: "JCE22CS058" } // Updated ID and Reg
     };
 
-    // Use the mapped name or default to the ID if not found
-    const nameToDisplay = studentNames[data.studentId] || "Unknown Student";
-    document.getElementById('student-name').innerText = nameToDisplay;
-    document.getElementById('student-id-number').innerText = data.studentId;
-    
-    // 2. Update Status Color and Text
-    const statusBox = document.getElementById('status-display');
-    const isOnBus = (data.status === "EN");
-    
-    statusBox.innerText = isOnBus ? "ON THE BUS" : "OFF THE BUS";
-    
-    // Ensure these classes (on/off) exist in your style.css
-    statusBox.className = isOnBus ? "bus-status status-on" : "bus-status status-off";
+    const profile = studentProfiles[data.studentId];
 
-    // 3. Update the Map (Hard Reset)
-    const mapPanel = document.querySelector('.map-panel');
-    
-    // Use innerHTML to force the iframe to reload with the new URL
-    if (data.location) {
-    mapPanel.innerHTML = `
-        <iframe 
-            src="${data.location}" 
-            width="100%" 
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy">
-        </iframe>`;
+    if (profile) {
+        // Update UI Text
+        document.getElementById('student-name').innerText = profile.name;
+        document.getElementById('reg-no').innerText = profile.reg;
+        document.getElementById('student-id-number').innerText = data.studentId;
+
+        // 2. Status Logic
+        const statusBox = document.getElementById('status-display');
+        const isOnBus = (data.status === "EN");
+        
+        statusBox.innerText = isOnBus ? "ON THE BUS" : "OFF THE BUS";
+        statusBox.className = isOnBus ? "bus-status status-on" : "bus-status status-off";
+
+        // 3. Map Logic
+        const mapPanel = document.querySelector('.map-panel');
+        if (data.location) {
+            mapPanel.innerHTML = `<iframe src="${data.location}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
+        }
     }
 });

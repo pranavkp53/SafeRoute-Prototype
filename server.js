@@ -22,30 +22,24 @@ res.sendFile(path.join(__dirname, 'index.html'));
 });
 // THE MAIN ENDPOINT: This is where your NodeMCU sends data
 app.post('/update-bus', (req, res) => {
-    // 1. Get the 3 strings sent from your NodeMCU JSON
-    const { hex, status, location } = req.body;
-    const normalizedHex = hex ? hex.toLowerCase().trim() : "unknown";
-    console.log(`Normalized Hex: ${normalizedHex}, Status: ${status}, Location: ${location}`);
+    // 1. Get the combined string and the location from the NodeMCU
+    const { rawTag, location } = req.body; // Expecting rawTag: "a0EN", "d8EX", etc.
 
-    // Log the data to the console for debugging
-    console.log(`Hex: ${hex}, Status: ${status}, Location: ${location}`);
+    if (rawTag && rawTag.length >= 4) {
+        // 2. Split the string (First 2 chars = ID, Last 2 chars = Status)
+        const hex = rawTag.substring(0, 2).toLowerCase(); // "a0"
+        const status = rawTag.substring(2, 4).toUpperCase(); // "EN"
 
-    // 2. Prepare the object for the dashboard
-    const updateData = {
-        studentId: normalizedHex,      // Your hexVal (e.g., D8)
-        status: status,      // Your status (e.g., EN)
-        location: location   // Your long Google URL
-    };
+        const updateData = {
+            studentId: hex,
+            status: status,
+            location: location
+        };
 
-    // 3. Emit the update to all connected dashboards
-    io.emit('busUpdate', updateData);
-    
-    // 4. Send a success response back to the NodeMCU
-    res.status(200).send({ message: "Data received successfully" });
-});
-
-// The server start logic stays at the bottom
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+        io.emit('busUpdate', updateData);
+        console.log(`Processed Single Stretch: ${rawTag}`);
+        res.status(200).send({ message: "Combined tag processed" });
+    } else {
+        res.status(400).send({ error: "Invalid rawTag format" });
+    }
 });
