@@ -4,17 +4,14 @@
   "description": "Backend for SafeRoute Bus Tracking Project",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": ["esp8266", "socket.io", "maps"],
   "author": "Pranav",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "socket.io": "^4.8.3",
-    "path": "^0.12.7"
+    "socket.io": "^4.8.3"
   }
 }
