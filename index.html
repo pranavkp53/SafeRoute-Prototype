@@ -1,58 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>SafeRoute: School Bus Tracking</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+    <meta charset="UTF-8" />
+    <title>SafeRoute: School Bus Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-<header>
-<div class="logo-title">SafeRoute: School Bus Tracking</div>
-<div class="menu-icon" onclick="toggleMenu()">
-<div></div>
-<div></div>
-<div></div>
-</div>
-<div class="menu" id="dropdownMenu">
-<a onclick="toggleSubmenu()">Login</a>
-<div class="submenu" id="loginSubmenu">
-<a href="#">Login as Parent</a>
-<a href="#">Login as Institution</a>
-</div>
-<a href="#">Student Details</a>
-<a href="#">Register a Complaint</a>
-<a href="#">Notices</a>
-<a href="#">Feedback</a>
-</div>
-</header>
-<div class="content">
-<div class="status-panel">
-<h3>Student Status</h3>
-<div class="student-info">
-<strong id="student-name">Waiting...</strong><br>
-ID: <span id="student-id-number">0000</span><br>
-<img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png"
-alt="Student">
+    <header>
+        <div class="logo-title" onclick="location.reload()">SafeRoute: School Bus Tracking</div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div></div><div></div><div></div>
+        </div>
+        <div class="menu" id="dropdownMenu">
+            <a onclick="toggleSubmenu()">Login</a>
+            <div class="submenu" id="loginSubmenu">
+                <a href="#">Login as Parent</a>
+                <a href="#">Login as Institution</a>
+            </div>
+            <a href="#">Student Details</a>
+            <a href="#">Register a Complaint</a>
+            <a href="#">Notices</a>
+            <a href="#">Feedback</a>
+        </div>
+    </header>
 
-<div id="status-display" class="bus-status off">OFF THE BUS</div>
-<button class="refresh-button" onclick="refreshStatus()">Refresh</button>
-<br>
-<button class="toggle-button" onclick="toggleBusStatus()">Toggle
-Status</button>
-</div>
-</div>
-<div class="map-panel">
-<div id="map-placeholder" style="text-align: center; padding-top: 100px;">
-    Waiting for bus location
-</div>
-<iframe id="map-frame" src="about:blank" width="100%" height="100%" style="border:0;"
-allowfullscreen="" loading="lazy"></iframe>
-</div>
-</div>
-</div>
-<script src="script.js"></script>
+    <div class="content">
+        <div class="status-panel">
+            <h3>Student Status</h3>
+            <div class="student-info">
+                <strong id="student-name">Waiting...</strong><br>
+                
+                Reg No: <span id="reg-no">-------</span><br>
+                
+                ID: <span id="student-id-number">0000</span><br>
+                
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png" alt="Student">
+
+                <div id="status-display" class="bus-status off">OFF THE BUS</div>
+                
+                <button class="refresh-button" onclick="refreshStatus()">Refresh</button>
+                <br>
+                <button class="toggle-button" onclick="toggleBusStatus()">Toggle Status</button>
+            </div>
+        </div>
+
+        <div class="map-panel">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4273190040894!2d76.42879817355194!3d10.778547159157624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7d8c845c845e3%3A0x58a2e5f7cd1811c7!2sJawaharlal%20College%20of%20Engineering%20and%20Technology!5e0!3m2!1sen!2sin!4v1770223482756!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

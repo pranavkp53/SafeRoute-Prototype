@@ -22,24 +22,26 @@ res.sendFile(path.join(__dirname, 'index.html'));
 });
 // THE MAIN ENDPOINT: This is where your NodeMCU sends data
 app.post('/update-bus', (req, res) => {
-    // 1. Get the combined string and the location from the NodeMCU
-    const { rawTag, location } = req.body; // Expecting rawTag: "a0EN", "d8EX", etc.
+    const { rawTag, location } = req.body; 
 
     if (rawTag && rawTag.length >= 4) {
-        // 2. Split the string (First 2 chars = ID, Last 2 chars = Status)
-        const hex = rawTag.substring(0, 2).toLowerCase(); // "a0"
-        const status = rawTag.substring(2, 4).toUpperCase(); // "EN"
+        // 1. Force IDs back to Uppercase (D8, A0, E7)
+        const hex = rawTag.substring(0, 2).toUpperCase(); 
+        const status = rawTag.substring(2, 4).toUpperCase(); 
+
+        // 2. Logic: If hardware sends no location, use the default bit
+        const finalLocation = location || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4273190040894!2d76.42879817355194!3d10.778547159157624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7d8c845c845e3%3A0x58a2e5f7cd1811c7!2sJawaharlal%20College%20of%20Engineering%20and%20Technology!5e0!3m2!1sen!2sin!4v1770223482756!5m2!1sen!2sin";
 
         const updateData = {
             studentId: hex,
             status: status,
-            location: location
+            location: finalLocation
         };
 
         io.emit('busUpdate', updateData);
-        console.log(`Processed Single Stretch: ${rawTag}`);
-        res.status(200).send({ message: "Combined tag processed" });
+        console.log(`Updated: ${hex}${status} at ${finalLocation}`);
+        res.status(200).send({ message: "Success" });
     } else {
-        res.status(400).send({ error: "Invalid rawTag format" });
+        res.status(400).send({ error: "Invalid format" });
     }
 });

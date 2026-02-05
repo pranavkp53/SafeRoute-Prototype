@@ -54,29 +54,27 @@ statusDiv.textContent = "ON THE BUS";
  // 5. Listen for real-time updates from the hardware/server
  // 5. Listen for real-time updates from the hardware/NodeMCU
 socket.on('busUpdate', (data) => {
-    // 1. Student Database
+    // 1. Updated Database with Uppercase Keys
     const studentProfiles = {
-        "a0": { name: "Gayathri M", reg: "JCE22CS023" },
-        "d8": { name: "Pranav KP", reg: "JCE22CS042" }, // Updated ID and Reg
-        "e7": { name: "Vaisakh PV", reg: "JCE22CS058" } // Updated ID and Reg
+        "A0": { name: "Gayathri M", reg: "JCE22CS023" },
+        "D8": { name: "Pranav KP", reg: "JCE22CS042" },
+        "E7": { name: "Vaisakh PV", reg: "JCE22CS058" }
     };
 
     const profile = studentProfiles[data.studentId];
 
     if (profile) {
-        // Update UI Text
         document.getElementById('student-name').innerText = profile.name;
         document.getElementById('reg-no').innerText = profile.reg;
         document.getElementById('student-id-number').innerText = data.studentId;
 
-        // 2. Status Logic
         const statusBox = document.getElementById('status-display');
         const isOnBus = (data.status === "EN");
         
         statusBox.innerText = isOnBus ? "ON THE BUS" : "OFF THE BUS";
         statusBox.className = isOnBus ? "bus-status status-on" : "bus-status status-off";
 
-        // 3. Map Logic
+        // 2. Update Map Refresh
         const mapPanel = document.querySelector('.map-panel');
         if (data.location) {
             mapPanel.innerHTML = `<iframe src="${data.location}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
